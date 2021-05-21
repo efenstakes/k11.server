@@ -19,18 +19,10 @@ const vaccination_schema = mongoose.Schema({
         required: true
     },
 
-    made_on: {
+    done_on: {
         type: Date,
         default: Date.now()
     },
-
-    is_negative: {
-        type: Boolean,
-    },
-
-    symptoms: {
-        type: Array,
-    }
 
 })
 
