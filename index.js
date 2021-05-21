@@ -7,6 +7,11 @@ const dotenv = require('dotenv')
 // app
 const app = express()
 
+
+// get database connection 
+require('./app/config/database')
+
+
 // get env variables
 dotenv.config()
 

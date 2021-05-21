@@ -44,7 +44,13 @@ const AccountSchema = mongoose.Schema({
             default: Date.now(),
         },
         done: { type: Boolean, default: false }
-    }
+    },
+
+    type: {
+        type: String,
+        enum: ['SUPER_ADMIN', 'ADMIN', 'STAFF', 'USER'],
+        default: 'USER'
+    },
 
 })
 
