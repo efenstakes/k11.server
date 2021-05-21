@@ -1,11 +1,14 @@
 const express = require('express')
 const cors = require('cors')
+const dotenv = require('dotenv')
 
 
 
 // app
 const app = express()
 
+// get env variables
+dotenv.config()
 
 // enable json processing
 app.use(express.json())
