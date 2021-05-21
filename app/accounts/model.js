@@ -6,7 +6,7 @@ const bcrypt = require('bcrypt')
 const { generate_code } = require('../utils/utils')
 
 
-const AccountSchema = mongoose.Schema({
+const account_schema = mongoose.Schema({
 
     name: {
         type: String,
@@ -49,7 +49,7 @@ const AccountSchema = mongoose.Schema({
 })
 
 // hash the password before saving a record
-UserSchema.pre('save', function(next) {
+account_schema.pre('save', function(next) {
     this.password = bcrypt.hashSync(this.password, 10)
     
     let code = generate_code()
@@ -59,8 +59,8 @@ UserSchema.pre('save', function(next) {
 })
 
 // delete any account data which may need deleting
-AccountSchema.pre('remove', function() {})
+account_schema.pre('remove', function() {})
 
-const Account = mongoose.model('Account', AccountSchema)
+const account = mongoose.model('Account', account_schema)
 
-module.exports = Account
+module.exports = account
