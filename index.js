@@ -1,19 +1,22 @@
 const express = require('express')
 const cors = require('cors')
 const dotenv = require('dotenv')
+const { graphqlHTTP } = require('express-graphql')
 
+
+// app imports
+const schema = require('./app/schema')
 
 
 // app
 const app = express()
 
-
-// get database connection 
-require('./app/config/database')
-
-
 // get env variables
 dotenv.config()
+
+// get database connection 
+require('./app/utils/database')
+
 
 // enable json processing
 app.use(express.json())
@@ -32,6 +35,14 @@ app.get('/', (_req, res)=> {
     })
 })
 
+// setup graphql
+app.use(
+    '/api',
+    graphqlHTTP({
+        schema,
+        graphiql: true,
+    })
+)
 
 
 const PORT = process.env.PORT || 4444
