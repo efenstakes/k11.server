@@ -27,14 +27,28 @@ const staff_schema = mongoose.Schema({
         required: true,
         unique: true,
         validate: (mail) => {
-            return validator.isEmail(mail)
+            return validator.default.isEmail(mail)
+        }
+    },
+
+    phone: {
+        type: String,
+        required: true,
+        unique: true,
+        validate: (mail) => {
+            return validator.default.isMobilePhone(mail)
         }
     },
 
     is_active: {
         type: Boolean,
         default: true
-    }
+    },
+
+    added_on: {
+        type: Date,
+        default: Date.now()
+    },
 
 })
 

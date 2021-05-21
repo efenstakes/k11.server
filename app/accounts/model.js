@@ -46,12 +46,6 @@ const AccountSchema = mongoose.Schema({
         done: { type: Boolean, default: false }
     },
 
-    type: {
-        type: String,
-        enum: ['SUPER_ADMIN', 'ADMIN', 'STAFF', 'USER'],
-        default: 'USER'
-    },
-
 })
 
 // hash the password before saving a record
