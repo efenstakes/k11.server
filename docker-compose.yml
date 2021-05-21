@@ -1,0 +1,31 @@
+version: '3.7'
+
+services:
+  server:
+    container_name: k11-API
+    restart: always
+    build: .
+    # image: efenstakes/k11
+    deploy:
+      restart_policy:
+        condition: on-failure
+      mode: replicated
+      replicas: 6
+    ports:
+      - '80:44556'
+    links: 
+      - db
+    depends_on:
+      - db
+
+  db:
+    container_name: k11-db
+    image: mongo
+    restart: always
+    ports:
+      - '27017:27017'
+    volumes:
+      - k11-dbdata:/data/db
+
+volumes:
+    k11-dbdata:
