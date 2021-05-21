@@ -6,6 +6,7 @@ const { graphqlHTTP } = require('express-graphql')
 
 // app imports
 const schema = require('./app/schema')
+const { authenticate, authenticate_staff } = require('./app/utils/auth')
 
 
 // app
@@ -25,8 +26,13 @@ app.use(express.json())
 app.use(cors())
 
 
-// routes
 
+// get auth status first
+app.use(authenticate)
+app.use(authenticate_staff)
+
+
+// routes
 
 app.get('/', (_req, res)=> {
     res.json({

@@ -1,8 +1,8 @@
 const jwt = require('jsonwebtoken')
 
 // get a handle to accounts coolection
-const accounts = require('../accounts/model')
-const staff = require('../staff/model')
+const accounts_model = require('../accounts/model')
+const staff_model = require('../staff/model')
 
 
 // Express middleware that validates Firebase ID Tokens passed in the Authorization HTTP header.
@@ -12,7 +12,7 @@ const staff = require('../staff/model')
 const authenticate = async (req, res, next) => {
     if (!req.headers.authorization || !req.headers.authorization.startsWith('Bearer ')) {
       req.is_authenticated = false
-      // return
+      req.user = null
       next()
     }
 
@@ -20,23 +20,22 @@ const authenticate = async (req, res, next) => {
     try {
       const payload = jwt.verify(idToken, process.env.ACCESS_TOKEN_SECRET)
       console.debug('payload ', payload)
-      const account_result = await accounts.findById(payload.id)
+      const account_result = await accounts_model.findById(payload.id)
 
       if( !account_result ) {
         req.is_authenticated = false
-        // return
+        req.user = null
         next()
       }
 
       const { password, ...user } = account_result
+      req.is_authenticated = true
       req.user = user
-      
-      
+            
       next()
-      // return;
     } catch(e) {
       req.is_authenticated = false
-      // return
+      req.user = null
       next()
     }
 };
@@ -46,7 +45,7 @@ const authenticate = async (req, res, next) => {
 const authenticate_staff = async (req, res, next) => {
   if (!req.headers.authorization || !req.headers.authorization.startsWith('Bearer ')) {
     req.is_authenticated = false
-    // return
+    req.user = null
     next()
   }
 
@@ -54,23 +53,22 @@ const authenticate_staff = async (req, res, next) => {
   try {
     const payload = jwt.verify(idToken, process.env.ACCESS_TOKEN_SECRET)
     console.debug('payload ', payload)
-    const account_result = await staff.findById(payload.id)
+    const account_result = await staff_model.findById(payload.id)
 
     if( !account_result ) {
       req.is_authenticated = false
-      // return
+      req.user = null
       next()
     }
 
     const { password, ...user } = account_result
-    req.user = account_result
-    
-    
+    req.is_authenticated = true
+    req.user = user
+          
     next()
-    // return;
   } catch(e) {
     req.is_authenticated = false
-    // return
+    req.user = null
     next()
   }
 };
