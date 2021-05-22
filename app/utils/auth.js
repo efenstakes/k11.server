@@ -87,11 +87,19 @@ const authenticate_staff = async (req, res, next) => {
 
 
 const generate_access_token = (account) => {
-  return jwt.sign({ ...account }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '6h', subject: user_id })
+  return jwt.sign(
+    { ...account }, 
+    process.env.ACCESS_TOKEN_SECRET, 
+    { expiresIn: '6h', subject: account._id.toString() }
+  )
 }
 
 const generate_refresh_token = (account) => {
-  return jwt.sign({ ...account }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '1y', subject: user_id })
+  return jwt.sign(
+    { ...account }, 
+    process.env.REFRESH_TOKEN_SECRET, 
+    { expiresIn: '1y', subject: account._id.toString() }
+  )
 }
 
 
