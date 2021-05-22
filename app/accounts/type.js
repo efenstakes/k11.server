@@ -30,7 +30,7 @@ const VerifiedType = new GraphQLObjectType({
     })
 })
 
-const AccountType = new GraphQLObjectType({
+const account_type = new GraphQLObjectType({
     name: 'AccountType',
     description: 'Account Type',
     fields: ()=> ({
@@ -82,7 +82,14 @@ const AccountType = new GraphQLObjectType({
         //         return []
         //     }
         // },
+        
+        refresh_token: {
+            type: GraphQLString
+        },
+        access_token: {
+            type: GraphQLString
+        },
     })
 })
 
-module.exports = AccountType
+module.exports = account_type
