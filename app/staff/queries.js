@@ -28,7 +28,7 @@ const add_staff = {
             type: GraphQLString,
         },
     },
-    resolve(context, args, { user }) {
+    async resolve(context, args, { user }) {
         // check if the one adding is authed
         if( !user ) return null
         // check if the one adding is an admin
@@ -55,7 +55,7 @@ const login_staff = {
             type: GraphQLString,
         },
     },
-    resolve(context, {email, password}) {
+    async resolve(context, {email, password}) {
         // check if user exists 
         let staff = await staff_model.findOne({ email }).exec()
 
@@ -92,7 +92,7 @@ const update_staff_profile = {
             type: GraphQLString,
         },
     },
-    resolve(context, args, { user }) {
+    async resolve(context, args, { user }) {
         // check if authenticated
         if( !user ) return null
 
@@ -122,7 +122,7 @@ const update_staff_password = {
             type: GraphQLString,
         },
     },
-    resolve(context, {old_password, password}, { user }) {
+    async resolve(context, {old_password, password}, { user }) {
         // check if authenticated
         if( !user ) return null
 
@@ -153,7 +153,7 @@ const update_staff_password = {
 // delete staff
 const delete_staff = {
     type: staff_type,
-    resolve(_context, _args, { user }) {
+    async resolve(_context, _args, { user }) {
         // check if authenticated
         if( !user ) return null
 
@@ -177,6 +177,6 @@ module.exports = {
     add_staff,
     login_staff,
     update_staff_profile,
-    update_staff_profile,
+    update_staff_password,
     delete_staff
 }

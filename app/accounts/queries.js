@@ -24,7 +24,7 @@ const create_account = {
             type: GraphQLString,
         },
     },
-    resolve(context, args) {
+    async resolve(context, args) {
         const new_account = await new account_model(args).save()
 
         const access_token = generate_access_token(new_account)
@@ -50,7 +50,7 @@ const login = {
             type: GraphQLString,
         },
     },
-    resolve(context, {email, password}) {
+    async resolve(_context, {email, password}) {
         // check if user exists 
         let account = await account_model.findOne({ email }).exec()
 
@@ -89,7 +89,7 @@ const update_profile = {
             type: GraphQLString,
         },
     },
-    resolve(context, args, { user }) {
+    async resolve(context, args, { user }) {
         // check if authenticated
         if( !user ) return null
 
@@ -118,7 +118,7 @@ const update_password = {
             type: GraphQLString,
         },
     },
-    resolve(context, {old_password, password}, { user }) {
+    async resolve(context, {old_password, password}, { user }) {
         // check if authenticated
         if( !user ) return null
 
@@ -148,7 +148,7 @@ const update_password = {
 // delete account
 const delete_account = {
     type: account_type,
-    resolve(_context, _args, { user }) {
+    async resolve(_context, _args, { user }) {
         // check if authenticated
         if( !user ) return null
 

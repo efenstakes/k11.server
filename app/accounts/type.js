@@ -16,7 +16,7 @@ const {
 
 
 const VerifiedType = new GraphQLObjectType({
-    name: 'User Verified Status',
+    name: 'VerifiedType',
     fields: ()=> ({
         code: { 
             type: GraphQLString,

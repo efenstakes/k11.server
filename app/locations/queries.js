@@ -26,7 +26,7 @@ const add_location = {
             type: GraphQLList(GraphQLString)
         },
     },
-    resolve(_context, args, { user }) {
+    async resolve(_context, args, { user }) {
         // check if the one adding is authed
         if( !user || !user.priviledge ) return null
 
@@ -45,7 +45,7 @@ const add_location = {
 const get_user_locations = {
     type: GraphQLList(location_type),
     args: {},
-    resolve(_context, args, { user }) {
+    async resolve(_context, args, { user }) {
         // check if the one adding is authed
         if( !user ) return null
 
@@ -67,7 +67,7 @@ const get_station_locations = {
             type: GraphQLString,
         },
     },
-    resolve(_context, { station }, { user }) {
+    async resolve(_context, { station }, { user }) {
         // check if the one adding is authed
         if( !user || !user.priviledge ) return null
 
@@ -88,7 +88,7 @@ const update_location = {
             type: GraphQLBoolean,
         },
     },
-    resolve(context, args, { user }) {
+    async resolve(context, args, { user }) {
         // check if authenticated
         if( !user || !user.priviledge ) return null
 
