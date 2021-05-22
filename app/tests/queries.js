@@ -79,7 +79,7 @@ const get_station_tests = {
 
 // update test -- set if -ve/+ve 
 const update_test = {
-    type: account_type,
+    type: test_type,
     args: {
         id: {
             type: GraphQLString,
