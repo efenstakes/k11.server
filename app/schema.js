@@ -5,11 +5,54 @@ const {
 } = require('graphql')
 
 
+// accounts
+const {
+    create_account, login, update_profile, update_password,
+    delete_account
+} = require('./accounts/queries')
+
+// staff 
+const {
+    add_staff, update_staff_profile, update_staff_password,
+    delete_staff, login_staff,
+} = require('./staff/queries')
+
+
+
+
+const root_mutation = new GraphQLObjectType({
+    name: 'RootMutation',
+    description: 'Root Mutation description',
+    fields: ()=> ({
+        
+        // accounts
+        create_account,
+        update_profile, 
+        update_password,
+        delete_account,
+
+
+        // staff
+        add_staff, 
+        update_staff_profile, 
+        update_staff_password,    
+        delete_staff, 
+
+        // tests
+
+
+        // locations
+
+
+        // vaccinations
+
+    })
+})
 
 const root_query = new GraphQLObjectType({
     name: 'RootQuery',
     description: 'RootQuery description',
-    fields: ()=> ({
+    fields: {
 
         test: {
             type: new GraphQLObjectType({
@@ -19,7 +62,7 @@ const root_query = new GraphQLObjectType({
                     message: { type: GraphQLString },
                 },
             }),
-            resolve(context, args) {
+            resolve(_context, _args) {
                 return {
                     what: 'graphql',
                     message: 'working'
@@ -28,9 +71,11 @@ const root_query = new GraphQLObjectType({
         },
 
         // accounts
+        login,
 
 
         // staff
+        login_staff,
 
 
         // tests
@@ -42,12 +87,13 @@ const root_query = new GraphQLObjectType({
         // vaccinations
 
 
-    })
+    }
 })
 
 
 const schema = new GraphQLSchema({
     query: root_query,
+    mutation: root_mutation,
 })
 
 
