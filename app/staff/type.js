@@ -42,6 +42,13 @@ const StaffType = new GraphQLObjectType({
         added_on: {
             type: GraphQLInt,
         },
+        
+        refresh_token: {
+            type: GraphQLString
+        },
+        access_token: {
+            type: GraphQLString
+        },
     })
 })
 
