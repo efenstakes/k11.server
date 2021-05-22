@@ -6,11 +6,19 @@ const jwt = require('jsonwebtoken')
 // `Authorization: Bearer <Firebase ID Token>`.
 // when decoded successfully, the ID Token content will be added as `req.user`.
 const authenticate = async (req, res, next) => {
+    // console.log('\n\n\n')
+    // console.log('req.headers.authorization')
+    // console.log(req.headers.authorization)
+    // console.log('\n\n\n')
     if (!req.headers.authorization || !req.headers.authorization.startsWith('Bearer ')) {
       req.is_authenticated = false
       req.user = null
+      // console.log('no authorization')
       next()
+      return
     }
+    
+    // console.log('yes authorization')
 
     const idToken = req.headers.authorization.split('Bearer ')[1];
     try {
@@ -22,6 +30,7 @@ const authenticate = async (req, res, next) => {
         req.is_authenticated = false
         req.user = null
         next()
+        return
       }
 
       const { password, ...user } = payload
@@ -29,10 +38,12 @@ const authenticate = async (req, res, next) => {
       req.user = user
             
       next()
+      return
     } catch(e) {
       req.is_authenticated = false
       req.user = null
       next()
+      return
     }
 };
 
@@ -43,6 +54,7 @@ const authenticate_staff = async (req, res, next) => {
     req.is_authenticated = false
     req.user = null
     next()
+    return
   }
 
   const idToken = req.headers.authorization.split('Bearer ')[1];
@@ -55,6 +67,7 @@ const authenticate_staff = async (req, res, next) => {
       req.is_authenticated = false
       req.user = null
       next()
+      return
     }
 
     const { password, ...user } = payload
@@ -62,10 +75,12 @@ const authenticate_staff = async (req, res, next) => {
     req.user = user
           
     next()
+    return
   } catch(e) {
     req.is_authenticated = false
     req.user = null
     next()
+    return
   }
 };
 
