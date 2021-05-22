@@ -1,9 +1,5 @@
 const jwt = require('jsonwebtoken')
 
-// get a handle to accounts coolection
-const accounts_model = require('../accounts/model')
-const staff_model = require('../staff/model')
-
 
 // Express middleware that validates Firebase ID Tokens passed in the Authorization HTTP header.
 // The Firebase ID token needs to be passed as a Bearer token in the Authorization HTTP header like this:
@@ -20,15 +16,15 @@ const authenticate = async (req, res, next) => {
     try {
       const payload = jwt.verify(idToken, process.env.ACCESS_TOKEN_SECRET)
       console.debug('payload ', payload)
-      const account_result = await accounts_model.findById(payload.id)
+      // const account_result = await accounts_model.findById(payload.id)
 
-      if( !account_result ) {
+      if( !payload ) {
         req.is_authenticated = false
         req.user = null
         next()
       }
 
-      const { password, ...user } = account_result
+      const { password, ...user } = payload
       req.is_authenticated = true
       req.user = user
             
@@ -53,15 +49,15 @@ const authenticate_staff = async (req, res, next) => {
   try {
     const payload = jwt.verify(idToken, process.env.ACCESS_TOKEN_SECRET)
     console.debug('payload ', payload)
-    const account_result = await staff_model.findById(payload.id)
+    // const account_result = await staff_model.findById(payload.id)
 
-    if( !account_result ) {
+    if( !payload ) {
       req.is_authenticated = false
       req.user = null
       next()
     }
 
-    const { password, ...user } = account_result
+    const { password, ...user } = payload
     req.is_authenticated = true
     req.user = user
           
@@ -75,23 +71,23 @@ const authenticate_staff = async (req, res, next) => {
 
 
 
-const generate_access_token = (user_id) => {
-  return jwt.sign({ id: user_id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '6h', subject: user_id })
+const generate_access_token = (account) => {
+  return jwt.sign({ ...account }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '6h', subject: user_id })
 }
 
-const generate_refresh_token = (user_id) => {
-  return jwt.sign({ id: user_id }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '1y', subject: user_id })
+const generate_refresh_token = (account) => {
+  return jwt.sign({ ...account }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '1y', subject: user_id })
 }
 
 
 const verify_access_token = (token)=> {
   const payload = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET)
-  return payload.id
+  return payload
 }
 
 const verify_refresh_token = (token)=> {
   const payload = jwt.verify(token, process.env.REFRESH_TOKEN_SECRET)
-  return payload.id
+  return payload
 }
 
 module.exports = {
