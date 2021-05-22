@@ -36,6 +36,9 @@ const add_staff = {
 
         const staff = await new staff_model(args).save()
 
+        // sth went wrong
+        if ( staff.$isEmpty() ) return null
+
         return {
             ...staff,
         }
@@ -60,7 +63,7 @@ const login_staff = {
         let staff = await staff_model.findOne({ email }).exec()
 
         // details were wrong
-        if ( !staff || !staff._id ) return null
+        if ( staff.$isEmpty() ) return null
 
         // check if passwords match
         let match = await bcrypt.compare(password, staff.password)
@@ -72,7 +75,7 @@ const login_staff = {
         const refresh_token = generate_refresh_token(staff)
         
         return {
-            ...staff,
+            ...staff.toObject(),
             access_token,
             refresh_token,
         }
@@ -100,10 +103,10 @@ const update_staff_profile = {
         let staff = await staff_model.findByIdAndUpdate(user._id, { ...args })
 
         // sth went wrong
-        if ( !staff || !staff._id ) return null
+        if ( staff.$isEmpty() ) return null
  
         return {
-            ...staff
+            ...staff.toObject()
         }
     }
 }
@@ -130,7 +133,7 @@ const update_staff_password = {
         let staff = await staff_model.findById(user._id).exec()
 
         // details were wrong
-        if ( !staff || !staff._id ) return null
+        if ( staff.$isEmpty() ) return null
 
         // check if passwords match
         let match = await bcrypt.compare(old_password, staff.password)
@@ -142,7 +145,7 @@ const update_staff_password = {
         await staff_model.findByIdAndUpdate(user._id, { password: new_password })
 
         return {
-            ...staff,
+            ...staff.toObject(),
         }
     }
 }
@@ -161,7 +164,7 @@ const delete_staff = {
         let staff = await staff_model.findByIdAndDelete(user._id)
 
         return {
-            ...staff,
+            ...staff.toObject(),
         }
     }
 }

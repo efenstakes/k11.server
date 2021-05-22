@@ -35,7 +35,7 @@ const add_test = {
         }).save()
 
         return {
-            ...test,
+            ...test.toObject(),
         }
     }
 }
@@ -96,10 +96,10 @@ const update_test = {
         let test = await test_model.findByIdAndUpdate(id, { ...args })
 
         // sth went wrong
-        if ( !test || !test._id ) return null
+        if ( test.$isEmpty() ) return null
  
         return {
-            ...test
+            ...test.toObject()
         }
     }
 }

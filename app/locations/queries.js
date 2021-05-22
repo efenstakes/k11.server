@@ -35,7 +35,7 @@ const add_location = {
         }).save()
 
         return {
-            ...location,
+            ...location.toObject(),
         }
     }
 }
@@ -99,7 +99,7 @@ const update_location = {
         if ( !location || !location._id ) return null
  
         return {
-            ...location
+            ...location.toObject(),
         }
     }
 }

@@ -96,10 +96,10 @@ const update_vaccination = {
         let vaccination = await vaccination_model.findByIdAndUpdate(id, { ...args })
 
         // sth went wrong
-        if ( !vaccination || !vaccination._id ) return null
+        if ( vaccination.$isEmpty() ) return null
  
         return {
-            ...vaccination
+            ...vaccination.toObject()
         }
     }
 }

@@ -30,8 +30,13 @@ const create_account = {
         const access_token = generate_access_token(new_account)
         const refresh_token = generate_refresh_token(new_account)
 
+        console.log('new_account ', new_account.toObject())
+
+        // return {
+        //     ...new_account,
+        // }
         return {
-            ...new_account,
+            ...new_account.toObject(),
             access_token,
             refresh_token,
         }
@@ -52,22 +57,22 @@ const login = {
     },
     async resolve(_context, {email, password}) {
         // check if user exists 
-        let account = await account_model.findOne({ email }).exec()
+        let account = await account_model.findOne({ email: email })
 
         // details were wrong
-        if ( !account || !account._id ) return null
+        if ( account.$isEmpty() ) return new Error('Wrong Details')
 
         // check if passwords match
         let match = await bcrypt.compare(password, account.password)
 
         // if passwords dont match return
-        if ( !match ) return null
+        if ( !match ) return new Error('Wrong Details P')
 
         const access_token = generate_access_token(account)
         const refresh_token = generate_refresh_token(account)
         
         return {
-            ...account,
+            ...account.toObject(),
             access_token,
             refresh_token,
         }
@@ -97,10 +102,10 @@ const update_profile = {
         let account = await account_model.findByIdAndUpdate(user._id, { ...args })
 
         // sth went wrong
-        if ( !account || !account._id ) return null
+        if ( account.$isEmpty() ) return null
  
         return {
-            ...account
+            ...account.toObject()
         }
     }
 }
@@ -126,7 +131,7 @@ const update_password = {
         let account = await account_model.findById(user._id).exec()
 
         // details were wrong
-        if ( !account || !account._id ) return null
+        if ( account.$isEmpty() ) return null
 
         // check if passwords match
         let match = await bcrypt.compare(old_password, account.password)
@@ -138,7 +143,7 @@ const update_password = {
         await account_model.findByIdAndUpdate(user._id, { password: new_password })
 
         return {
-            ...account,
+            ...account.toObject(),
         }
     }
 }
