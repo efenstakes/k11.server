@@ -17,6 +17,17 @@ const {
     delete_staff, login_staff,
 } = require('./staff/queries')
 
+// tests
+const {
+    add_test, get_user_tests, get_station_tests, update_test,
+} = require('./tests/queries')
+
+// locations
+const {
+    add_location, update_location,
+    get_user_locations, get_station_locations,
+} = require('./locations/queries')
+
 
 
 
@@ -39,9 +50,13 @@ const root_mutation = new GraphQLObjectType({
         delete_staff, 
 
         // tests
+        add_test,
+        update_test,
 
 
         // locations
+        add_location,
+        update_location,
 
 
         // vaccinations
@@ -79,9 +94,12 @@ const root_query = new GraphQLObjectType({
 
 
         // tests
+        get_user_tests, 
+        get_station_tests, 
 
 
         // locations
+        get_user_locations, get_station_locations,
 
 
         // vaccinations
