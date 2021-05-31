@@ -28,6 +28,12 @@ const {
     get_user_locations, get_station_locations,
 } = require('./locations/queries')
 
+// vaccinations
+const {
+    add_vaccination, update_vaccination,
+    get_user_vaccinations, get_station_vaccinations,
+} = require('./vaccinations/queries')
+
 
 
 
@@ -60,6 +66,7 @@ const root_mutation = new GraphQLObjectType({
 
 
         // vaccinations
+        add_vaccination, update_vaccination,
 
     })
 })
@@ -103,7 +110,7 @@ const root_query = new GraphQLObjectType({
 
 
         // vaccinations
-
+        get_user_vaccinations, get_station_vaccinations,
 
     }
 })
